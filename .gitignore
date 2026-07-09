@@ -1,0 +1,45 @@
+# Binary
+vox
+vox-bin
+*.exe
+
+# Env
+.env
+.dev.vars
+
+# Node
+**/node_modules/
+package-lock.json
+
+# Python
+**/__pycache__/
+*.pyc
+**/.venv/
+
+# Wrangler
+**/.wrangler/
+
+# OS
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Chrome data
+/tmp/vox-chrome-*
+
+# Research - papers are tracked via git-lfs or kept small
+
+# Fine-tune datasets and checkpoints
+csm-1b-ft/finetune/data/
+csm-1b-ft/finetune/data2/
+csm-1b-ft/finetune/data-expresso/
+csm-1b-ft/finetune/output/
+csm-1b-ft/finetune/output-expresso/
+csm-1b-ft/csm-mlx/.venv/
+
+# agentd build output
+.agentd/
+mac/voxaudio
+vox-linux

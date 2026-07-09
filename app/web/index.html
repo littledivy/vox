@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vox</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="offline-banner" id="offlineBanner">Vox engine offline — reconnecting… <button id="offlineRetry">Retry</button></div>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#1c1a17"/><g fill="#fff"><rect x="7" y="13" width="2.4" height="6" rx="1.2"/><rect x="11.6" y="9" width="2.4" height="14" rx="1.2"/><rect x="16.2" y="5.5" width="2.4" height="21" rx="1.2"/><rect x="20.8" y="10.5" width="2.4" height="11" rx="1.2"/><rect x="25.4" y="14" width="2.4" height="4" rx="1.2"/></g></svg>
+        <div class="name">Vox</div>
+        <div class="ver">0.1</div>
+      </div>
+      <nav class="nav" id="nav" aria-label="Primary">
+        <button data-view="home" class="active">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+          Home
+        </button>
+        <button data-view="integrations">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          Integrations
+        </button>
+        <button data-view="notes">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>
+          Notes
+        </button>
+        <button data-view="settings">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Settings
+        </button>
+      </nav>
+      <div class="spacer"></div>
+      <div class="status-chip" id="statusChip"><span class="dot"></span><span id="statusText">Not connected</span></div>
+    </aside>
+
+    <main class="main">
+      <!-- HOME -->
+      <section class="view active" data-view="home">
+        <div class="voice-stage">
+          <div class="home-actions" id="homeActions">
+            <button class="action" id="btnJoin">
+              <span class="action-ico" style="background:#00832D"><svg viewBox="0 0 24 24" fill="#fff"><path d="M5.53 2.13 0 7.75h5.53zm.398 0v5.62h7.608v3.65l5.47-4.45c-.014-1.22.031-2.25-.025-3.46-.148-1.09-1.287-1.47-2.236-1.36zM23.1 4.32c-.802.295-1.358.995-2.047 1.49-2.506 2.05-4.982 4.12-7.468 6.19 3.025 2.59 6.04 5.18 9.065 7.76 1.218.671 1.428-.814 1.328-1.64v-13a.828.828 0 0 0-.877-.825zM.038 8.15v7.7h5.53v-7.7zm13.577 8.1H6.008v5.62c3.864-.006 7.737.011 11.58-.009 1.02-.07 1.618-1.12 1.468-2.07v-2.51l-5.47-4.68v3.65zm-13.577 0c.02 1.44-.041 2.88.033 4.31.162.948 1.158 1.43 2.047 1.31h3.464v-5.62z"/></svg></span>
+              <span class="action-label">Join a meeting</span>
+              <span class="action-sub">Paste a Meet link</span>
+            </button>
+            <button class="action" id="btnConnectCal">
+              <span class="action-ico" style="background:#1A73E8"><svg viewBox="0 0 24 24" fill="#fff"><path d="M18.316 5.684H24v12.632h-5.684V5.684zM5.684 24h12.632v-5.684H5.684V24zM18.316 5.684V0H1.895A1.894 1.894 0 0 0 0 1.895v16.421h5.684V5.684h12.632zm-7.207 6.25v-.065c.272-.144.5-.349.687-.617s.279-.595.279-.982c0-.379-.099-.72-.3-1.025a2.05 2.05 0 0 0-.832-.714 2.703 2.703 0 0 0-1.197-.257c-.6 0-1.094.156-1.481.467-.386.311-.65.671-.793 1.078l1.085.452c.086-.249.224-.461.413-.633.189-.172.445-.257.767-.257.33 0 .602.088.816.264a.86.86 0 0 1 .322.703c0 .33-.12.589-.36.778-.24.19-.535.284-.886.284h-.567v1.085h.633c.407 0 .748.109 1.02.327.272.218.407.499.407.843 0 .336-.129.614-.387.832s-.565.327-.924.327c-.351 0-.651-.103-.897-.311-.248-.208-.422-.502-.521-.881l-1.096.452c.178.616.505 1.082.977 1.401.472.319.984.478 1.538.477a2.84 2.84 0 0 0 1.293-.291c.382-.193.684-.458.902-.794.218-.336.327-.72.327-1.149 0-.429-.115-.797-.344-1.105a2.067 2.067 0 0 0-.881-.689zm2.093-1.931l.602.913L15 10.045v5.744h1.187V8.446h-.827l-2.158 1.557z"/></svg></span>
+              <span class="action-label">Connect calendar</span>
+              <span class="action-sub">Upcoming events</span>
+            </button>
+          </div>
+          <div class="home-hint" id="homeHint"></div>
+
+          <div class="home-upcoming" id="homeUpcoming" hidden>
+            <div class="home-up-head"><span>Upcoming</span><button class="btn tiny ghost" id="btnHomeCal">Open calendar</button></div>
+            <div class="cal-list" id="homeUpList"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- INTEGRATIONS -->
+      <section class="view" data-view="integrations">
+        <div class="eyebrow">Connect Vox</div>
+        <h1 class="display">Integrations</h1>
+        <p class="sub">Where Vox can show up. Tap one to set it up.</p>
+        <h2 class="section">Meetings</h2>
+        <div class="grid" id="meetGrid"></div>
+        <h2 class="section">Tools &amp; context</h2>
+        <div class="grid" id="toolGrid"></div>
+      </section>
+
+      <!-- SESSION (live meeting) -->
+      <section class="view" data-view="session">
+        <div class="sess-bar">
+          <div class="sess-live"><span class="live-dot"></span> Live <span class="sess-dot">·</span> <span class="mono" id="sessTimer">00:00</span></div>
+          <div class="sess-url" id="sessUrl">—</div>
+        </div>
+
+        <div class="sess-hero">
+          <div class="orb st-listening" id="sessOrb"></div>
+          <div class="sess-controls">
+            <button class="ctl" id="btnMute" aria-label="Mute">
+              <span class="ctl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>
+              <span class="ctl-label">Mute</span>
+            </button>
+            <button class="ctl leave" id="btnLeave" aria-label="Leave">
+              <span class="ctl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 17l5-5-5-5M21 12H9M12 19H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h7"/></svg></span>
+              <span class="ctl-label">Leave</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="sess-people" id="sessParticipants"></div>
+
+        <div class="sess-tx-head">
+          <span>Transcript</span>
+          <span class="sess-tx-actions"><button class="btn tiny" id="btnSaveNotes">Save notes</button> <button class="btn tiny" id="btnCopySess">Copy</button></span>
+        </div>
+        <div class="transcript" id="sessTranscript"><span class="muted">Listening…</span></div>
+
+        <div class="engine-error" id="sessError"></div>
+        <details class="logbox">
+          <summary>Session log</summary>
+          <pre id="sessLog" class="mono"></pre>
+        </details>
+      </section>
+
+      <!-- CALENDAR -->
+      <section class="view" data-view="calendar">
+        <div class="eyebrow">Google Calendar</div>
+        <h1 class="display">Calendar</h1>
+        <p class="sub">Your upcoming events. Data stays on this Mac.</p>
+
+        <!-- Connect -->
+        <div class="cal-step" id="calConnect" hidden>
+          <p class="hint">Sign in with Google and grant read-only calendar access. A browser tab opens for consent — since Vox is an unverified test app, choose <b>Advanced → Continue</b>, then Allow.</p>
+          <div class="row"><button class="btn primary" id="btnConnectGoogle">Connect Google</button></div>
+        </div>
+
+        <!-- Connected: events -->
+        <div class="cal-step" id="calEvents" hidden>
+          <div class="cal-head">
+            <h2 class="section" style="margin:0">Upcoming</h2>
+            <span class="cal-head-actions"><button class="btn tiny" id="btnCalRefresh">Refresh</button> <button class="btn tiny" id="btnCalDisconnect">Disconnect</button></span>
+          </div>
+          <div class="cal-list" id="calList"></div>
+        </div>
+        <div class="engine-error" id="calError"></div>
+      </section>
+
+      <!-- NOTES -->
+      <section class="view" data-view="notes">
+        <div class="eyebrow">Saved</div>
+        <h1 class="display">Notes</h1>
+        <p class="sub">Saved transcripts, kept in <span class="kbd">~/.vox/notes</span>.</p>
+        <div class="row" style="margin-bottom:14px;align-items:center">
+          <input id="notesSearch" class="notes-search" aria-label="Search notes" placeholder="Search notes…" />
+          <button class="btn" id="btnRevealNotes">Reveal in Finder</button>
+        </div>
+        <div class="notes-layout">
+          <div class="notes-list" id="notesList"></div>
+          <div class="notes-body" id="notesBody"><span class="muted">Select a note.</span></div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="view" data-view="settings">
+        <div class="eyebrow">Configuration</div>
+        <h1 class="display">Settings</h1>
+        <p class="sub">Keys stay on this Mac, in <span class="kbd">~/.vox/config.json</span>.</p>
+
+        <h2 class="section">System</h2>
+        <div class="readiness" id="readiness"></div>
+
+        <h2 class="section">Identity</h2>
+        <div class="field">
+          <label>Your name</label>
+          <div class="hint">How Vox introduces itself and what it answers to in a meeting.</div>
+          <input id="s_owner" aria-label="Your name" placeholder="Divy" />
+        </div>
+
+        <h2 class="section">Voice</h2>
+        <div class="field">
+          <label>Voice engine</label>
+          <div class="hint">Realtime uses one OpenAI model for hearing, thinking, and speaking — recommended.</div>
+          <select id="s_voice" aria-label="Voice engine">
+            <option value="realtime">OpenAI Realtime (recommended)</option>
+            <option value="classic">Classic (Deepgram + Groq + Orpheus)</option>
+          </select>
+        </div>
+        <div class="inline">
+          <div class="field">
+            <label>Realtime voice</label>
+            <select id="s_rt_voice" aria-label="Realtime voice">
+              <option value="cedar">Cedar</option>
+              <option value="marin">Marin</option>
+              <option value="alloy">Alloy</option>
+              <option value="shimmer">Shimmer</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Realtime model</label>
+            <select id="s_rt_model" aria-label="Realtime model">
+              <option value="gpt-realtime-2.1-mini">gpt-realtime-2.1-mini (fast)</option>
+              <option value="gpt-realtime">gpt-realtime (best)</option>
+            </select>
+          </div>
+        </div>
+
+        <h2 class="section">API keys</h2>
+        <div class="field">
+          <label>OpenAI API key</label>
+          <div class="hint">Required for realtime voice. <span class="kbd">sk-…</span></div>
+          <input id="s_openai" type="password" aria-label="OpenAI API key" placeholder="sk-…" />
+        </div>
+        <details class="more-keys">
+          <summary>Classic-mode keys (Deepgram · Groq · Together)</summary>
+          <div class="field">
+            <label>Deepgram API key</label>
+            <div class="hint">Speech-to-text for classic voice.</div>
+            <input id="s_deepgram" type="password" aria-label="Deepgram API key" placeholder="Optional" />
+          </div>
+          <div class="field">
+            <label>Groq API key</label>
+            <div class="hint">Fast gate + voice layer for classic voice.</div>
+            <input id="s_groq" type="password" aria-label="Groq API key" placeholder="Optional" />
+          </div>
+          <div class="field">
+            <label>Together API key</label>
+            <div class="hint">Orpheus TTS for classic voice.</div>
+            <input id="s_together" type="password" aria-label="Together API key" placeholder="Optional" />
+          </div>
+        </details>
+
+        <div class="row">
+          <button class="btn primary" id="btnSave">Save settings</button>
+          <button class="btn" id="btnClearKeys">Forget keys</button>
+        </div>
+        <div class="test-result" id="testResult"></div>
+
+        <details class="more-keys" id="mcpManual">
+          <summary>Manual MCP config</summary>
+          <p class="hint">Paste this into your Claude config's <span class="kbd">mcpServers</span> if you'd rather not auto-install.</p>
+          <pre class="mcp-snippet mono" id="mcpSnippet">…</pre>
+          <button class="btn tiny" id="btnCopyMcp">Copy config</button>
+        </details>
+
+        <div class="divider"></div>
+        <div class="about">
+          <svg class="about-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1c1a17"/><g fill="#fff"><rect x="7" y="13" width="2.4" height="6" rx="1.2"/><rect x="11.6" y="9" width="2.4" height="14" rx="1.2"/><rect x="16.2" y="5.5" width="2.4" height="21" rx="1.2"/><rect x="20.8" y="10.5" width="2.4" height="11" rx="1.2"/><rect x="25.4" y="14" width="2.4" height="4" rx="1.2"/></g></svg>
+          <div>
+            <div class="about-name">Vox <span class="muted">v0.1.0</span></div>
+            <div class="about-desc">Claude's voice in Google Meet. Runs locally. <a href="https://github.com/littledivy/vox" data-ext>GitHub ↗</a></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Onboarding (first run) -->
+  <div class="onboard" id="onboard" role="dialog" aria-modal="true" aria-label="Welcome to Vox">
+    <div class="onboard-card">
+      <div class="onboard-dots" id="obDots"></div>
+
+      <div class="ob-step active" data-step="0">
+        <svg class="ob-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="24" fill="#1c1a17"/><g fill="#fff"><rect x="7" y="13" width="2.4" height="6" rx="1.2"/><rect x="11.6" y="9" width="2.4" height="14" rx="1.2"/><rect x="16.2" y="5.5" width="2.4" height="21" rx="1.2"/><rect x="20.8" y="10.5" width="2.4" height="11" rx="1.2"/><rect x="25.4" y="14" width="2.4" height="4" rx="1.2"/></g></svg>
+        <h2>Welcome to Vox</h2>
+        <p>Claude joins your Google Meet calls — listens, and speaks when it should.</p>
+        <button class="btn primary wide" data-next>Get started</button>
+      </div>
+
+      <div class="ob-step" data-step="1">
+        <h2>Add your OpenAI key</h2>
+        <p>Realtime voice runs on one OpenAI model. Your key stays on this Mac, in <span class="kbd">~/.vox/config.json</span>.</p>
+        <div class="field"><label>Your name</label><input id="ob_owner" placeholder="Divy" /></div>
+        <div class="field"><label>OpenAI API key</label><input id="ob_openai" type="password" placeholder="sk-…" /></div>
+        <div class="row" style="justify-content:space-between">
+          <button class="btn" data-back>Back</button>
+          <button class="btn primary" data-next>Continue</button>
+        </div>
+      </div>
+
+      <div class="ob-step" data-step="2">
+        <h2>Install into Claude</h2>
+        <p>Register Vox as an MCP server so Claude or Codex can send itself into meetings. Runs locally.</p>
+        <div class="ob-install" id="obInstallState">
+          <button class="btn primary wide" id="obInstall">Install into Claude</button>
+        </div>
+        <div class="row" style="justify-content:space-between">
+          <button class="btn" data-back>Back</button>
+          <button class="btn" data-next>Skip</button>
+        </div>
+      </div>
+
+      <div class="ob-step" data-step="3">
+        <div class="ob-check">✓</div>
+        <h2>You're all set</h2>
+        <p>Open Integrations to connect Meet, then send Vox into a call.</p>
+        <button class="btn primary wide" id="obDone">Enter Vox</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help / shortcuts modal -->
+  <div class="modal-scrim" id="helpModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Help and shortcuts">
+      <h3>Help &amp; shortcuts</h3>
+      <p class="modal-sub">Vox gives your Claude a voice in Google Meet. Runs locally.</p>
+      <div class="help-grid">
+        <div><span class="kbd">⌘1</span></div><div>Home</div>
+        <div><span class="kbd">⌘2</span></div><div>Integrations</div>
+        <div><span class="kbd">⌘3</span></div><div>Notes</div>
+        <div><span class="kbd">⌘4</span> · <span class="kbd">⌘,</span></div><div>Settings</div>
+        <div><span class="kbd">⌘J</span></div><div>Join a meeting</div>
+        <div><span class="kbd">?</span></div><div>This help</div>
+        <div><span class="kbd">Esc</span></div><div>Close dialogs</div>
+      </div>
+      <p class="modal-sub" style="margin:16px 0 0">Meet needs an OpenAI key + Chrome. Keys live in <span class="kbd">~/.vox/config.json</span>.</p>
+      <div class="row" style="justify-content:flex-end;margin-top:18px"><button class="btn primary" id="helpClose">Got it</button></div>
+    </div>
+  </div>
+
+  <!-- Join modal -->
+  <div class="modal-scrim" id="joinModal">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Join a meeting">
+      <h3>Join a meeting</h3>
+      <p class="modal-sub">Paste a Google Meet link.</p>
+      <div class="field">
+        <label>Meeting link</label>
+        <input id="joinUrl" aria-label="Meeting link" placeholder="https://meet.google.com/abc-defg-hij" />
+      </div>
+      <div class="field">
+        <label>Context <span class="muted">(optional)</span></label>
+        <div class="hint">What you're working on, so Vox can speak from real context.</div>
+        <input id="joinContext" placeholder="e.g. reviewing the Q3 launch plan" />
+      </div>
+      <div class="row" style="justify-content:flex-end">
+        <button class="btn" id="joinCancel">Cancel</button>
+        <button class="btn primary" id="joinGo">Send Vox in</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Integration config modal -->
+  <div class="modal-scrim" id="intModal">
+    <div class="modal int-modal" role="dialog" aria-modal="true" aria-label="Integration settings">
+      <div class="int-head">
+        <div class="int-logo" id="intLogo"></div>
+        <div class="int-head-txt">
+          <h3 id="intTitle"></h3>
+          <div class="int-status" id="intStatus"></div>
+        </div>
+        <button class="int-x" id="intClose" aria-label="Close">✕</button>
+      </div>
+      <p class="modal-sub" id="intDesc"></p>
+      <div class="int-body" id="intBody"></div>
+      <div class="row int-actions" id="intActions"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

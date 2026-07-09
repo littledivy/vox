@@ -1,0 +1,23 @@
+diff --git a/mlx_audio/codec/models/snac/snac.py b/mlx_audio/codec/models/snac/snac.py
+--- a/mlx_audio/codec/models/snac/snac.py
++++ b/mlx_audio/codec/models/snac/snac.py
+@@ -147,14 +147,15 @@ class SNAC(nn.Module):
+         full_audio = self.decode(combined_codes)
+
+         # Calculate how many samples came from context
+-        # Each code frame produces hop_length samples after all upsampling
+-        context_samples = context_frames * self.hop_length
++        context_samples = int(context_frames * self.hop_length)
+
+-        # Return only new samples (after context region)
+-        if full_audio.shape[-1] > context_samples:
+-            new_audio = full_audio[..., context_samples:]
++        # MLX SNAC output shape is (batch, samples, channels).
++        # Trim along the samples axis (dim 1), not the last dim.
++        if full_audio.shape[1] > context_samples:
++            new_audio = full_audio[:, context_samples:, :]
+         else:
+             new_audio = full_audio
+
+         # Update context with end of current codes
+         new_context = [

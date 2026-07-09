@@ -1,0 +1,22 @@
+{
+  "tasks": {
+    "dev": "deno desktop --hmr -A --include ./web --include ../vox main.ts",
+    "start": "deno desktop -A --include ./web --include ../vox main.ts",
+    "serve": "deno run -A main.ts",
+    "build": "deno desktop -A --include ./web --include ../vox --output ./dist/Vox.app main.ts"
+  },
+  "desktop": {
+    "app": {
+      "name": "Vox",
+      "identifier": "com.littledivy.vox",
+      "icons": {
+        "macos": "./icons/app.icns",
+        "windows": "./icons/app.ico",
+        "linux": "./icons/app-512.png"
+      }
+    },
+    "output": {
+      "macos": "./dist/Vox.app"
+    }
+  }
+}

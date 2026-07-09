@@ -1,0 +1,91 @@
+# Build, code-sign, and notarize the Vox desktop app on macOS.
+#
+# On a `v*` tag it produces a signed + notarized .dmg per architecture and
+# attaches them to the GitHub release. Notarization means the app opens with no
+# Gatekeeper authorization prompt on any Mac.
+#
+# Secrets required for signing (falls back to ad-hoc if unset — e.g. on forks):
+#   APPLE_SIGN_ID          "Developer ID Application: NAME (TEAMID)"
+#   APPLE_CERT_P12_BASE64  base64 of the Developer ID .p12
+#   APPLE_CERT_PASSWORD    password for that .p12
+#   NOTARY_KEY_JSON        {"key_id","issuer_id","private_key"} App Store Connect key
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-14   # Apple silicon
+            arch: arm64
+          - runner: macos-13   # Intel
+            arch: x86_64
+    runs-on: ${{ matrix.runner }}
+    env:
+      APPLE_SIGN_ID: ${{ secrets.APPLE_SIGN_ID }}
+      # True only when the signing cert is present. Without it we build ad-hoc
+      # (forks, or before the cert secret is configured).
+      HAS_CERT: ${{ secrets.APPLE_CERT_P12_BASE64 != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: canary   # `deno desktop` ships in canary
+
+      - name: Build the vox engine (Go)
+        run: go build -o vox .
+
+      - name: Import signing certificate
+        if: env.HAS_CERT == 'true'
+        env:
+          CERT_P12: ${{ secrets.APPLE_CERT_P12_BASE64 }}
+          CERT_PW: ${{ secrets.APPLE_CERT_PASSWORD }}
+        run: |
+          KC=build.keychain; KC_PW=$(uuidgen)
+          echo "$CERT_P12" | base64 --decode > /tmp/cert.p12
+          security create-keychain -p "$KC_PW" "$KC"
+          security default-keychain -s "$KC"
+          security unlock-keychain -p "$KC_PW" "$KC"
+          security set-keychain-settings -t 3600 -u "$KC"
+          security import /tmp/cert.p12 -k "$KC" -P "$CERT_PW" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KC_PW" "$KC"
+          rm -f /tmp/cert.p12
+
+      - name: Build, sign, notarize
+        working-directory: app
+        env:
+          NOTARY_KEY_JSON_CONTENT: ${{ secrets.NOTARY_KEY_JSON }}
+        run: |
+          if [ "$HAS_CERT" = "true" ]; then
+            printf '%s' "$NOTARY_KEY_JSON_CONTENT" > /tmp/notary.json
+            SIGN_ID="$APPLE_SIGN_ID" NOTARIZE=1 NOTARY_KEY_JSON=/tmp/notary.json ./package.sh
+          else
+            echo "No signing cert — building ad-hoc."
+            ./package.sh
+          fi
+          mv dist/Vox.dmg "dist/Vox-${{ matrix.arch }}.dmg"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Vox-${{ matrix.arch }}
+          path: app/dist/Vox-${{ matrix.arch }}.dmg
+
+      - name: Attach to release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: app/dist/Vox-${{ matrix.arch }}.dmg

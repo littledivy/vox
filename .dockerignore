@@ -1,0 +1,12 @@
+# The image builds the Go binary in-stage, so it needs the source. Exclude only
+# secrets, VCS, prebuilt artifacts, and things the container doesn't use.
+.git
+.github
+.env
+.env.*
+vox
+vox-linux
+mac
+research
+replay.html
+*.md
