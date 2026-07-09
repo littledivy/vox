@@ -1,5 +1,10 @@
 # vox — put your Claude in the meeting
 
+<img width="1192" height="872" alt="image" src="https://github.com/user-attachments/assets/3102e649-cd9c-4084-ae96-b3bc0f9bc568" />
+<img width="364" height="495" alt="image" src="https://github.com/user-attachments/assets/57ca6e99-79c3-4a2c-bda3-a0baeb31a4cd" />
+
+<img width="1209" height="926" alt="image" src="https://github.com/user-attachments/assets/56d00eac-5981-4386-87e8-72c190d7340f" />
+
 vox is a local **MCP server** that lets your Claude agent join a Google Meet as a
 real participant — it listens, talks back in a natural low-latency voice, knows
 when to speak (and when to stay quiet), and answers with your Claude session's
